@@ -1,5 +1,4 @@
-const url = require('url');
-const Generator = require('yeoman-generator');
+import Generator from 'yeoman-generator';
 
 const normalizeAppName = (name) => {
   const normalized = name.toLocaleLowerCase()
@@ -10,7 +9,7 @@ const normalizeAppName = (name) => {
   return `CarMax.${normalized}`;
 }
 
-module.exports = class extends Generator {
+export default class extends Generator {
 
   initializing() {
     this.log("New project huh? We've got you covered, just answer a few questions...");
@@ -88,19 +87,19 @@ module.exports = class extends Generator {
     }
 
     if (this.answers.createNugetConfig) {
-      this.log('Adding nuget.config')
-      const nugetUrl = url.parse(this.answers.nugetSource);
-      this.fs.copyTpl(
-        this.templatePath('nuget.template'),
-        this.destinationPath('nuget.config'),
-        {
-          label: nugetUrl.hostname,
-          url: nugetUrl.href
-        }
-      );
+        this.log('Adding nuget.config');
+        const nugetUrl = new URL(this.answers.nugetSource);
+        this.fs.copyTpl(
+            this.templatePath('nuget.template'),
+            this.destinationPath('nuget.config'),
+            {
+                label: nugetUrl.hostname,
+                url: nugetUrl.href
+            }
+        );
     }
 
-    this.log('Adding .vscode to .gitignore')
+    this.log('Adding .vscode to .gitignore');
     this.fs.copy(
       this.templatePath('gitignore.template'),
       this.destinationPath('.gitignore')
@@ -119,21 +118,21 @@ module.exports = class extends Generator {
   dotnet() {
 
     this.log('Creating a solution file...');
-    this.spawnCommandSync('dotnet',
-      [
-        'new',
-        'sln',
-        '--name',
-        this.answers.solutionName
-      ],
-      {
-        cwd: this.destinationRoot()
-      }
+    this.spawnSync('dotnet',
+        [
+            'new',
+            'sln',
+            '--name',
+            this.answers.solutionName
+        ],
+        {
+            cwd: this.destinationRoot()
+        }
     );
 
     if (this.answers.projectType) {
       this.log(`Creating ${this.answers.projectType} project...`);
-      this.spawnCommandSync('dotnet',
+      this.spawnSync('dotnet',
         [
           'new',
           this.answers.projectType,
@@ -148,7 +147,7 @@ module.exports = class extends Generator {
       );
 
       this.log(`Adding ${this.answers.projectName} to solution...`);
-      this.spawnCommandSync('dotnet', [
+      this.spawnSync('dotnet', [
         'sln',
         'add',
         `src/${this.answers.projectName}`
@@ -179,7 +178,7 @@ module.exports = class extends Generator {
       const unitTestProjectName = `${this.answers.projectName}.Tests.Unit`;
       const unitTestProjectPath = `tests/${unitTestProjectName}`;
       this.log(`Creating ${unitTestProjectName} project...`);
-      this.spawnCommandSync('dotnet',
+      this.spawnSync('dotnet',
         [
           'new',
           'xunit',
@@ -194,7 +193,7 @@ module.exports = class extends Generator {
       );
 
       this.log(`Adding reference to ${this.answers.projectName} to test project...`);
-      this.spawnCommandSync('dotnet',
+      this.spawnSync('dotnet',
         [
           'add',
           unitTestProjectPath,
@@ -207,7 +206,7 @@ module.exports = class extends Generator {
       );
 
       this.log(`Adding Moq to test project...`);
-      this.spawnCommandSync('dotnet',
+      this.spawnSync('dotnet',
         [
           'add',
           unitTestProjectPath,
@@ -220,7 +219,7 @@ module.exports = class extends Generator {
       );
 
       this.log(`Adding unitTestProjectName to solution...`);
-      this.spawnCommandSync('dotnet', [
+      this.spawnSync('dotnet', [
         'sln',
         'add',
         unitTestProjectPath
