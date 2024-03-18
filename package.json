@@ -11,7 +11,10 @@
     "generators"
   ],  
   "keywords": [
-    "yeoman-generator"
+    "yeoman-generator",
+    "dotnet",
+    "project",
+    "bootstrap"
   ],
   "author": "",
   "license": "ISC",
