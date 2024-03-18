@@ -9,14 +9,14 @@
   },
   "files": [
     "generators"
-  ],  
+  ],
   "keywords": [
     "yeoman-generator",
     "dotnet",
     "project",
     "bootstrap"
   ],
-  "author": "",
+  "author": "Bruno Habermann",
   "license": "ISC",
   "dependencies": {
     "yeoman-generator": "^7.1.1"
@@ -31,5 +31,13 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/bhabermann/genrator-habermann.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bhabermann/genrator-habermann/issues"
+  },
+  "homepage": "https://github.com/bhabermann/genrator-habermann#readme"
 }
